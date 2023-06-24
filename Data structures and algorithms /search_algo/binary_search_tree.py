@@ -61,16 +61,52 @@ class BinarySearchTreeNode:
             else:
                 return False
 
+    def delete_node(self, val):
+        if self.data > val:
+            if self.left:
+                self.left = self.left.delete_node(val)
+        elif self.data < val:
+            if self.right:
+                self.right = self.right.delete_node(val)
+
+        else:
+            if self.left is None and self.right is None:
+                self.data = None
+                return None
+            elif self.right is None:
+                max_val = self.left.find_max()
+                self.data = max_val
+                self.left = self.left.delete_node(max_val)
+            else:
+                min_val = self.right.find_min()
+                self.data = min_val
+                self.right = self.right.delete_node(min_val)
+
+        return self
+
+    def find_min(self):
+        if self.left is None:
+            return self.data
+        return self.left.find_min()
+
+    def find_max(self):
+        if self.right is None:
+            return self.data
+        return self.right.find_max()
+
 
 if __name__ == '__main__':
-    root = BinarySearchTreeNode(15)
-    root.add_child(12)
-    root.add_child(14)
-    root.add_child(7)
-    root.add_child(27)
+    root = BinarySearchTreeNode(17)
+    root.add_child(4)
+    root.add_child(1)
+    root.add_child(9)
     root.add_child(20)
-    root.add_child(88)
-    root.add_child(23)
-    print(root.post_order_traversal())
-
-    print(root.search(12))
+    root.add_child(18)
+    root.add_child(13)
+    root.add_child(19)
+    # root.add_child(23)
+    # root.add_child(34)
+    print('1', root.in_order_traversal())
+    # print(root.search(12))
+    root.delete_node(17)
+    print('2', root.in_order_traversal())
